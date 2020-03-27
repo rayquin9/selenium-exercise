@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -24,6 +25,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.selenium.exercise.pages.BasePage;
 import com.selenium.exercise.pages.FindFlightsPage;
 import com.selenium.exercise.pages.RegisterPage;
 import com.selenium.exercise.pages.RegistrationConfirmationPage;
@@ -49,6 +51,13 @@ public class LoginTest {
     private String userName = "testUser9";
     private String password = "testUser9";
 
+    private BasePage basePage;
+    
+    @Before
+    public void before() {
+        basePage = new BasePage();
+    }
+    
     @Test
     @Ignore
     public void testLoginOnChrome() {
@@ -235,7 +244,7 @@ public class LoginTest {
         //registerUser(driver);
         driver.get(registerUrl);
         RegisterPage registerPage = PageFactory.initElements(driver, RegisterPage.class);
-        registerPage.registerUser();
+      //  registerPage.registerUser();
         
         //Move to Page Class
         new WebDriverWait(driver, 5).until(ExpectedConditions.urlContains(registerConfirmationPageUrl));
@@ -316,7 +325,27 @@ public class LoginTest {
         org.hamcrest.MatcherAssert.assertThat(driver.getCurrentUrl(),
                 org.hamcrest.Matchers.containsString(registerConfirmationPageUrl));
     }
+    private void registerUserWithPages(WebDriver driver) {
+        driver.get(registerUrl);
+        RegisterPage registerPage =  new RegisterPage(driver);
+        
+        registerPage.getFirstName().sendKeys(firstName);
+        registerPage.getLastName().sendKeys(lastName);
+        registerPage.getPhone().sendKeys(phone);
+        registerPage.getEmail().sendKeys(email);
+        registerPage.getAddress1().sendKeys(address);
+        registerPage.getCity().sendKeys(city);
+        registerPage.getState().sendKeys(state);
+        registerPage.getZipCode().sendKeys(zip);
+        registerPage.getUserName().sendKeys(userName);
+        registerPage.getPassword().sendKeys(password);
+        registerPage.getConfirmPassword().sendKeys(password);
+        registerPage.getRegisterButton().submit();
 
+        registerPage.waitUntilUrlContains(driver, registerConfirmationPageUrl);
+        org.hamcrest.MatcherAssert.assertThat(driver.getCurrentUrl(),
+                org.hamcrest.Matchers.containsString(registerConfirmationPageUrl));
+    }
     private WebDriver setupChromeDriver() {
         String path = "src/test/resources/drivers/chromedriver.exe";
 

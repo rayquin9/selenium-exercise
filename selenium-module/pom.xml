@@ -9,18 +9,18 @@
     <name>selenium-module</name>
     <description>Selenium Module</description>
     <properties>
-    
-    <maven.compiler.source>1.13</maven.compiler.source>
-    <maven.compiler.target>1.13</maven.compiler.target>
+        <maven.compiler.source>1.13</maven.compiler.source>
+        <maven.compiler.target>1.13</maven.compiler.target>
         <selenium.version>3.141.59</selenium.version>
+        <cucumber.version>5.5.0</cucumber.version>
     </properties>
 
     <dependencies>
-<dependency>
-    <groupId>org.hamcrest</groupId>
-    <artifactId>hamcrest</artifactId>
-    <version>2.1</version>
-</dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.1</version>
+        </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -45,6 +45,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
