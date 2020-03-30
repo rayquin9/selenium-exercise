@@ -19,7 +19,7 @@
 Feature: Find A Flight
 
 @FindFlightChrome
-  Scenario: Basic Registration
+  Scenario: Basic Flight Search
     Given I am in "Chrome"
     And I log into the application with the following values:
     | Element    | Value                      |
@@ -45,7 +45,7 @@ Feature: Find A Flight
    Then I close the browser
   
   @FindFlightFirefox
-  Scenario: Basic Registration2
+  Scenario: Basic Flight Search FireFox
     Given I am in "Firefox"
     And I log into the application with the following values:
     | Element    | Value                      |
