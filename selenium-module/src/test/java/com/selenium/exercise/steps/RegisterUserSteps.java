@@ -2,20 +2,14 @@ package com.selenium.exercise.steps;
 
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.selenium.exercise.constants.LoginForm;
 import com.selenium.exercise.pages.RegisterPage;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 public class RegisterUserSteps {
@@ -23,16 +17,10 @@ public class RegisterUserSteps {
     private static final String registerUrl = "http://newtours.demoaut.com/mercuryregister.php";
     private static final String registerConfirmationPageUrl = "http://newtours.demoaut.com/create_account_success.php";
 
-    WebDriver driver = null;
+    private BaseSteps baseSteps;
 
-    @Given("^I am in \"Chrome\"$")
-    public void useChrome() {
-        driver = setupChromeDriver();
-    }
-
-    @Given("^I am in \"Firefox\"$")
-    public void useFirefox() {
-        driver = setupFirefoxDriver();
+    public RegisterUserSteps(BaseSteps baseSteps) {
+        this.baseSteps = baseSteps;
     }
 
     @And("^I log into the application with the following values:$")
@@ -41,38 +29,15 @@ public class RegisterUserSteps {
         loginWithDetails(rows);
     }
 
-    @Then("^I close the browser$")
-    public void closeDriver() {
-        driver.quit();
-    }
-
     @Then("^I check that I am on the Registered User Page$")
     public void checkRegisteredPageUrl() {
-        org.hamcrest.MatcherAssert.assertThat(driver.getCurrentUrl(),
+        org.hamcrest.MatcherAssert.assertThat(baseSteps.getDriver().getCurrentUrl(),
                 org.hamcrest.Matchers.containsString(registerConfirmationPageUrl));
     }
 
-    private WebDriver setupChromeDriver() {
-        String path = "src/test/resources/drivers/chromedriver.exe";
-
-        File file = new File(path);
-        String absolutePath = file.getAbsolutePath();
-        System.setProperty("webdriver.chrome.driver", absolutePath);
-        return new ChromeDriver();
-    }
-
-    private WebDriver setupFirefoxDriver() {
-        String path = "src/test/resources/drivers/geckodriver.exe";
-
-        File file = new File(path);
-        String absolutePath = file.getAbsolutePath();
-        System.setProperty("webdriver.gecko.driver", absolutePath);
-        return new FirefoxDriver();
-    }
-
     private void loginWithDetails(List<Map<String, String>> detailRows) {
-        driver.get(registerUrl);
-        RegisterPage registerPage = new RegisterPage(driver);
+        baseSteps.getDriver().get(registerUrl);
+        RegisterPage registerPage = new RegisterPage(baseSteps.getDriver());
         for (Map<String, String> map : detailRows) {
             String valueString = map.get("Value");
             switch (LoginForm.from(map.get("Element"))) {
@@ -113,6 +78,6 @@ public class RegisterUserSteps {
         }
 
         registerPage.getRegisterButton().submit();
-        registerPage.waitUntilUrlContains(driver, registerConfirmationPageUrl);
+        registerPage.waitUntilUrlContains(baseSteps.getDriver(), registerConfirmationPageUrl);
     }
 }

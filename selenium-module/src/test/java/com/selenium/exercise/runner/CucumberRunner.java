@@ -10,7 +10,7 @@ import io.cucumber.junit.CucumberOptions;
         plugin     =   {"pretty","html:target/cucumber" , "json:target/cucumber.json" },
         features   =   {"src/test/resources/features"},
         glue       =   {"com.selenium.exercise.steps"},
-        tags       =   {"@Firefox"},
+        tags       =   {"@FindFlightChrome"},
         dryRun     =   false,
         strict     =   false,
         monochrome =   false

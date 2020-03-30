@@ -261,7 +261,7 @@ public class LoginTest {
         // 4 in Business class with no airline preference
 
         FindFlightsPage findFlightsPage = PageFactory.initElements(driver, FindFlightsPage.class);
-        findFlightsPage.setSearchFields("New York", "March", "31", "Paris", "April", "4");
+        //findFlightsPage.setSearchFields("New York", "March", "31", "Paris", "April", "4");
 
         // select flight class
         driver.findElement(By.cssSelector("input[name='servClass'][value='Business']")).click();

@@ -5,42 +5,46 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
 public class FindFlightsPage extends BasePage {
 
-    @FindBy(how = How.LINK_TEXT, using = "fromPort")
+    @FindBy(how = How.NAME, using = "fromPort")
     private WebElement fromCitySelector;
 
-    @FindBy(how = How.LINK_TEXT, using = "fromMonth")
+    @FindBy(how = How.NAME, using = "fromMonth")
     private WebElement fromMonthSelector;
 
-    @FindBy(how = How.LINK_TEXT, using = "fromDay")
+    @FindBy(how = How.NAME, using = "fromDay")
     private WebElement fromDaySelector;
 
-    @FindBy(how = How.LINK_TEXT, using = "toPort")
+    @FindBy(how = How.NAME, using = "toPort")
     private WebElement toCitySelector;
 
-    @FindBy(how = How.LINK_TEXT, using = "toMonth")
+    @FindBy(how = How.NAME, using = "toMonth")
     private WebElement returnMonthSelector;
 
-    @FindBy(how = How.LINK_TEXT, using = "toDay")
+    @FindBy(how = How.NAME, using = "toDay")
     private WebElement returnDaySelector;
 
     @FindBy(how = How.CSS, using = "input[name='servClass'][value='Business']")
     private WebElement businessClassRadioButton;
 
-    public void setSearchFields(String departCity, String departMonth, String departDay, String toCity,
-            String returnMonth, String returnDay) {
-        new Select(fromCitySelector).selectByValue(departCity);
-        new Select(fromMonthSelector).selectByValue(departMonth);
-        new Select(fromDaySelector).selectByValue(departDay);
-        new Select(toCitySelector).selectByValue(toCity);
-        new Select(returnMonthSelector).selectByValue(returnMonth);
-        new Select(returnDaySelector).selectByValue(returnDay);
-    }
+    @FindBy(how = How.CSS, using = "input[name='servClass'][value='Coach']")
+    private WebElement coachClassRadioButton;
 
-    public FindFlightsPage (WebDriver driver) {
+    @FindBy(how = How.CSS, using = "input[name='servClass'][value='First']")
+    private WebElement firstClassRadioButton;
+
+    @FindBy(how = How.CSS, using = "input[name='tripType'][value='roundtrip']")
+    private WebElement roundTripRadioButton;
+
+    @FindBy(how = How.CSS, using = "input[name='tripType'][value='oneway']")
+    private WebElement oneWayRadioButton;
+
+    @FindBy(how = How.NAME, using = "findFlights")
+    private WebElement submitButton;
+    
+    public FindFlightsPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
@@ -70,5 +74,25 @@ public class FindFlightsPage extends BasePage {
 
     public WebElement getBusinessClassRadioButton() {
         return businessClassRadioButton;
+    }
+
+    public WebElement getCoachClassRadioButton() {
+        return coachClassRadioButton;
+    }
+
+    public WebElement getFirstClassRadioButton() {
+        return firstClassRadioButton;
+    }
+
+    public WebElement getRoundTripRadioButton() {
+        return roundTripRadioButton;
+    }
+
+    public WebElement getOneWayRadioButton() {
+        return oneWayRadioButton;
+    }
+
+    public WebElement getSubmitButton() {
+        return submitButton;
     }
 }
