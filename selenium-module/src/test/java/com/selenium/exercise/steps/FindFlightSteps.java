@@ -14,6 +14,7 @@ import com.selenium.exercise.pages.FindFlightsPage;
 import com.selenium.exercise.pages.RegistrationConfirmationPage;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -39,7 +40,7 @@ public class FindFlightSteps {
         findFlight(flightType, flightClass, rows);
     }
 
-    @Then("^I move to the Flights Page$")
+    @And("^I move to the Flights Page$")
     public void clickFlightsLink() {
         RegistrationConfirmationPage confirmationPage = new RegistrationConfirmationPage(baseSteps.getDriver());
         confirmationPage.gotoFlightsPage();
