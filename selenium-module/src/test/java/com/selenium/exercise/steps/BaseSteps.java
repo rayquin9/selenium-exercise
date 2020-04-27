@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Properties;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -11,25 +12,34 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 public class BaseSteps {
 
     private WebDriver driver = null;
+    private Properties properties;
 
-    @Given("^I am in \"Chrome\"$")
-    public void useChrome() {
-        driver = setupChromeDriver();
+    public BaseSteps() throws IOException {
+        properties = new Properties();
+        properties.load(this.getClass().getClassLoader().getResourceAsStream("cucumberTest.properties"));
     }
 
-    @Given("^I am in \"Firefox\"$")
-    public void useFirefox() {
-        driver = setupFirefoxDriver();
+    @Before
+    public void setupDriver() {
+        String browserType = getProperty("browser");
+        if ("Chrome".equalsIgnoreCase(browserType)) {
+            driver = setupChromeDriver();
+        } else if ("Firefox".equalsIgnoreCase(browserType)) {
+            driver = setupFirefoxDriver();
+        } else {
+            throw new RuntimeException("Invalid browswer type given: " + browserType);
+
+        }
     }
 
-    @Then("^I close the browser$")
+    @Then("^the browser gets closed$")
     public void closeDriver() {
         driver.quit();
     }
@@ -46,7 +56,7 @@ public class BaseSteps {
     }
 
     private WebDriver setupChromeDriver() {
-        String path = "src/test/resources/drivers/chromedriver.exe";
+        String path = getProperty("chrome.driver");
 
         File file = new File(path);
         String absolutePath = file.getAbsolutePath();
@@ -55,7 +65,7 @@ public class BaseSteps {
     }
 
     private WebDriver setupFirefoxDriver() {
-        String path = "src/test/resources/drivers/geckodriver.exe";
+        String path = getProperty("firefox.driver");
 
         File file = new File(path);
         String absolutePath = file.getAbsolutePath();
@@ -67,4 +77,7 @@ public class BaseSteps {
         return driver;
     }
 
+    public String getProperty(String name) {
+        return properties.getProperty(name);
+    }
 }

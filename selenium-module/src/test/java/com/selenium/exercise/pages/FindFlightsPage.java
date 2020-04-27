@@ -1,5 +1,9 @@
 package com.selenium.exercise.pages;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,6 +11,10 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class FindFlightsPage extends BasePage {
+
+    private static final String FIRST_CLASS = "FIRST";
+    private static final String COACH_CLASS = "COACH";
+    private static final String BUSINESS_CLASS = "BUSINESS";
 
     @FindBy(how = How.NAME, using = "fromPort")
     private WebElement fromCitySelector;
@@ -43,9 +51,15 @@ public class FindFlightsPage extends BasePage {
 
     @FindBy(how = How.NAME, using = "findFlights")
     private WebElement submitButton;
-    
+
+    private Map<String, WebElement> flightClassElements;
+
     public FindFlightsPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
+        this.flightClassElements = new HashMap<String, WebElement>();
+        this.flightClassElements.put(BUSINESS_CLASS, businessClassRadioButton);
+        this.flightClassElements.put(COACH_CLASS, coachClassRadioButton);
+        this.flightClassElements.put(FIRST_CLASS, firstClassRadioButton);
     }
 
     public WebElement getFromCitySelector() {
@@ -94,5 +108,19 @@ public class FindFlightsPage extends BasePage {
 
     public WebElement getSubmitButton() {
         return submitButton;
+    }
+
+    public void selectFlightClass(String inputClassType) {
+        boolean foundClass = false;
+        for (Entry<String, WebElement> flightClass : flightClassElements.entrySet()) {
+            if (flightClass.getKey().equalsIgnoreCase(inputClassType)) {
+                flightClass.getValue().click();
+                foundClass = true;
+                break;
+            }
+        }
+        if (!foundClass) {
+            throw new RuntimeException("Invalid flightclass type: " + inputClassType);
+        }
     }
 }

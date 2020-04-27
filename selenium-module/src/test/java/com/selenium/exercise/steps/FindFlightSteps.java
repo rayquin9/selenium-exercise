@@ -29,9 +29,8 @@ public class FindFlightSteps {
         this.baseSteps = baseSteps;
     }
 
-    
-    @When("^I search for a \"([^\"]*)\" \"([^\"]*)\" class flight with the following values:$")
-    public void loginWithDetails(String flightType, String flightClass, DataTable searchValues) {
+    @When("^the User searches for a \"([^\"]*)\" \"([^\"]*)\" class flight with the following values:$")
+    public void flightSearch(String flightType, String flightClass, DataTable searchValues) {
         System.out.println("Flight type: " + flightType);
         System.out.println("Flight class: " + flightClass);
 
@@ -41,7 +40,7 @@ public class FindFlightSteps {
         findFlight(flightType, flightClass, rows);
     }
 
-    @And("^I move to the Flights Page$")
+    @And("^moves to the Flights Page$")
     public void clickFlightsLink() {
         RegistrationConfirmationPage confirmationPage = new RegistrationConfirmationPage(baseSteps.getDriver());
         confirmationPage.gotoFlightsPage();
@@ -49,7 +48,7 @@ public class FindFlightSteps {
                 org.hamcrest.Matchers.containsString(flightsPageUrl));
     }
 
-    @Then("^I should see flight results$")
+    @Then("^they should see flight results$")
     public void confirmOnFlightResultsPage() {
         org.hamcrest.MatcherAssert.assertThat(baseSteps.getDriver().getCurrentUrl(),
                 org.hamcrest.Matchers.containsString(flightSearchResultsPargeUrl));
@@ -57,6 +56,17 @@ public class FindFlightSteps {
 
     private void findFlight(String flightType, String flightClass, List<Map<String, String>> rows) {
         FindFlightsPage page = new FindFlightsPage(baseSteps.getDriver());
+
+        page.selectFlightClass(flightClass);
+        setTripType(flightType, page);
+        selectFlightDetails(rows, page);
+
+        page.getSubmitButton().click();
+        new WebDriverWait(baseSteps.getDriver(), 5).until(ExpectedConditions.urlContains(flightSearchResultsPargeUrl));
+    }
+
+
+    private void setTripType(String flightType, FindFlightsPage page) {
         if ("ROUNDTRIP".equals(flightType)) {
             page.getRoundTripRadioButton().click();
         } else if ("ONE WAY".equals(flightType)) {
@@ -64,23 +74,9 @@ public class FindFlightSteps {
         } else {
             fail("Invalid trip type");
         }
-
-        if ("BUSINESS".equals(flightClass)) {
-            page.getBusinessClassRadioButton().click();
-        } else if ("ECONOMY".equals(flightClass)) {
-            page.getCoachClassRadioButton().click();
-        } else if ("FIRST".equals(flightClass)) {
-            page.getFirstClassRadioButton().click();
-        } else {
-            fail("Invalid class type");
-        }
-        loginWithDetails(page, rows);
-
-        page.getSubmitButton().click();
-        new WebDriverWait(baseSteps.getDriver(), 5).until(ExpectedConditions.urlContains(flightSearchResultsPargeUrl));
     }
 
-    private void loginWithDetails(FindFlightsPage page, List<Map<String, String>> detailRows) {
+    private void selectFlightDetails(List<Map<String, String>> detailRows, FindFlightsPage page) {
         int i = 0;
         String[] dateStuff;
         String month, day;
@@ -120,7 +116,7 @@ public class FindFlightSteps {
                 returnDaySelect.selectByIndex(i);
                 break;
             default:
-                fail("Invalid Login form Field");
+                fail("Invalid form Field");
             }
         }
     }
