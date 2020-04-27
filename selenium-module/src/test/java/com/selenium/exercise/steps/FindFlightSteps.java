@@ -29,6 +29,7 @@ public class FindFlightSteps {
         this.baseSteps = baseSteps;
     }
 
+    
     @When("^I search for a \"([^\"]*)\" \"([^\"]*)\" class flight with the following values:$")
     public void loginWithDetails(String flightType, String flightClass, DataTable searchValues) {
         System.out.println("Flight type: " + flightType);

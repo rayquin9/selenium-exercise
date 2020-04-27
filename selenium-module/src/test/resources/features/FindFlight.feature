@@ -16,12 +16,12 @@
 #""
 ## (Comments)
 #Sample Feature Definition Template
-Feature: Find A Flight
+Feature: Find A Flight #TODO Enhance
 
 @FindFlightChrome
-  Scenario: Basic Flight Search
-    Given I am in "Chrome"
-    And I log into the application with the following values:
+  Scenario: Basic Flight Search #Enhance this name #TODO replace I with USER
+    Given I am in "Chrome" #Move to properties
+    And I log into the application with the following values: #TODO Move to implicit login step (use a test user/ property file)
     | Element    | Value                      |
     | First Name | Jeff                       |
     | Last Name  | Bryan                      |
@@ -41,8 +41,8 @@ Feature: Find A Flight
     | Arriving City  | London      |
     | Return Date    | April 14    |
    Then I should see flight results
-   And take a screenshot and save it to "findFlightScreenshot_Chrome"
-   Then I close the browser
+   And take a screenshot and save it to "findFlightScreenshot_Chrome" #TODO Hide this in an implicit step/combine with above step
+   #Then I close the browser
   
   @FindFlightFirefox
   Scenario: Basic Flight Search FireFox
@@ -68,4 +68,4 @@ Feature: Find A Flight
     | Return Date    | April 25    |
    Then I should see flight results
    And take a screenshot and save it to "findFlightScreenshot_Firefox"
-   Then I close the browser
+   #Then I close the browser
